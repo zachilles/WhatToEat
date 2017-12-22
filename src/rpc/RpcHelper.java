@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class RpcHelper {
 	public static void writeJsonArray(HttpServletResponse response, JSONArray array){
 		try {
-			response.setContentType("aaplication/json");
+			response.setContentType("aplication/json");
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			PrintWriter out = response.getWriter();
 			out.print(array);
@@ -23,7 +23,7 @@ public class RpcHelper {
 	
 	public static void writeJsonObject(HttpServletResponse response, JSONObject obj){
 		try {
-			response.setContentType("aaplication/json");
+			response.setContentType("aplication/json");
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			PrintWriter out = response.getWriter();
 			out.print(obj);

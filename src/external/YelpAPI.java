@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,12 +19,13 @@ import org.json.JSONObject;
 import entity.Item;
 import entity.Item.ItemBuilder;
 
-public class YelpAPI {
+public class YelpAPI implements ExternalAPI {
 	private static final String API_HOST = "api.yelp.com/v3";
 	private static final String SEARCH_PATH = "/businesses/search";
 	private static final String DEFAULT_TERM = "";
 	private static final String API_KEY = "YPgaUOpQ3IFhUByRwFO1irlJu2gg77WIJqTrsprH_xlpC2j8iF1vEFG0lio33S4kQJd1KkBjhlBlYERs5c-yV7x2GMlR0lPn-mwjBau5SUMAAnxwl02DgIxvQVQ3WnYx";
 	
+	@Override
 	public List<Item> search(double lat, double lon, String term) {
 		String url = "https://" + API_HOST + SEARCH_PATH;
 		if(term == null) {
@@ -110,8 +112,8 @@ public class YelpAPI {
 			builder.setItemId(getStringFieldOrNull(business, "id"));
 			builder.setName(getStringFieldOrNull(business, "name"));
 			builder.setCategories(getCategories(business));
-			builder.setImageUrl(getImageUrl(business));
-			builder.setUrl(getUrl(business));
+			builder.setImageUrl(getStringFieldOrNull(business, "image_url"));
+			builder.setUrl(getStringFieldOrNull(business, "url"));
 			builder.setRating(getNumericFieldOrNull(business, "rating"));
 			JSONObject coordinates = getCoordinates(business);
 			if(coordinates != null) {
@@ -159,19 +161,14 @@ public class YelpAPI {
 		return business.isNull("location") ? null : business.getJSONObject("location");
 	}
 
-	private String getUrl(JSONObject business) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String getImageUrl(JSONObject business) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private Set<String> getCategories(JSONObject business) {
-		// TODO Auto-generated method stub
-		return null;
+	private Set<String> getCategories(JSONObject business) throws JSONException {
+		Set<String> categories = new HashSet<>();
+		JSONArray yelpCategories = (JSONArray) business.get("categories");
+		for (int j = 0; j < yelpCategories.length(); j++) {
+			JSONObject category = yelpCategories.getJSONObject(j);
+			categories.add(category.getString("title"));
+		}
+		return categories;
 	}
 
 	private String getStringFieldOrNull(JSONObject business, String field) throws JSONException {
@@ -180,14 +177,6 @@ public class YelpAPI {
 	
 	private double getNumericFieldOrNull(JSONObject location, String field) throws JSONException {
 		return location.isNull(field) ? null : location.getDouble(field);
-	}
-
-	/*
-	 * main method for debug
-	 */
-	public static void main(String[] args) {
-		YelpAPI yApi = new YelpAPI();
-		yApi.queryAPI(40.453184, -79.948549);
 	}
 	
 }
