@@ -1,12 +1,14 @@
 package db;
 
+import db.mysql.MySQLConnection;
+
 public class DBConnectionFactory {
 	private static final String DEFAULT_DB = "mysql";
 	
 	public static DBConnection getDBConnection(String db) {
 		switch(db) {
 		case("mysql"):
-			return null;
+			return new MySQLConnection();
 		default:
 			throw new IllegalArgumentException("Invalid db: " + db);
 		}
