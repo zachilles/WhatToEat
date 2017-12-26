@@ -13,6 +13,7 @@ public interface DBConnection {
 	public Set<Item> getFavoriteItems(String userId);
 	public Set<String> getCategories(String itemId);
 	public List<Item> searchItems(String userId, double lat, double lon, String term);
+	public void saveCategory(String userId, String category);
 	public void saveItem(Item item);
 	public String getFullname(String userId);
 	public boolean verifyLogin(String userId, String password);

@@ -43,8 +43,8 @@ public class SearchItem extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Get parameter from HTTP request
 		String userId = request.getParameter("user_id");
-		double lat = Double.parseDouble(request.getParameter("latitude"));
-		double lon = Double.parseDouble(request.getParameter("longitude"));
+		double lat = Double.parseDouble(request.getParameter("lat"));
+		double lon = Double.parseDouble(request.getParameter("lon"));
 		String term = request.getParameter("term");
 		
 		DBConnection conn = DBConnectionFactory.getDBConnection();

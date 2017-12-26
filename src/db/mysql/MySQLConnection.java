@@ -1,5 +1,6 @@
 package db.mysql;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -45,6 +46,7 @@ public class MySQLConnection implements DBConnection {
 	public void setFavoriteItems(String userId, List<String> itemIds) {
 		if(conn == null) return;
 		try {
+			//Add favored restaurants to history table
 			String sql = "INSERT INTO history (user_id, item_id) VALUES (?, ?)";
 			PreparedStatement statement = conn.prepareStatement(sql);
 			for(String itemId : itemIds) {
@@ -52,6 +54,10 @@ public class MySQLConnection implements DBConnection {
 				statement.setString(2, itemId);
 				statement.execute();
 			}
+			
+			//Add favored categories to categories table
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -188,14 +194,33 @@ public class MySQLConnection implements DBConnection {
 			statement.setString(15, item.getPrice());
 			statement.setString(16, item.getPhone());
 			statement.setDouble(17, item.getDistance());
+			statement.execute();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void saveCategory(String userId, String category) {
+		if (conn == null) {
+			return;
+		}
+		try {
+			String sql = "INSERT IGNORE INTO categories VALUES (?,?)";
+			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			statement.setString(1, userId);
+			statement.setString(2, category);
 			
 			statement.execute();
 			
 		} catch (SQLException e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public String getFullname(String userId) {
 		if(conn == null) return null;
@@ -232,5 +257,4 @@ public class MySQLConnection implements DBConnection {
 		}
 		return false;
 	}
-
 }
