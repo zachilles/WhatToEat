@@ -68,7 +68,7 @@ public class MySQLTableCreation {
 			stmt.executeUpdate(sql);
 
 			// Insert a fake user for test
-			sql = "INSERT INTO users " + "VALUES (\"1111\", \"3229c1097c00d497a0fd282d586be050\", \"John\", \"Smith\")";
+			sql = "INSERT INTO users " + "VALUES (\"1111\", \"3229c1097c00d497a0fd282d586be050\", \"Zach\", \"Zhang\")";
 			System.out.println("Executing query:\n" + sql);
 			stmt.executeUpdate(sql);
 			
