@@ -42,7 +42,7 @@ public class GeoRecommendation {
 		//Remove the restaurants already favored
 		List<Item> filteredItems  = new ArrayList<>();
 		for(Item item : recommendedItems) {
-			if(!favoriteItems.contains(item)) {
+			if(!favoriteItems.contains(item.getItemId())) {
 				filteredItems.add(item);
 			}
 		}
