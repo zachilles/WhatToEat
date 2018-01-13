@@ -41,14 +41,15 @@ public class RandomList extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-//		if (session.getAttribute("user") == null) {
-//			response.setStatus(403);
-//			return;
-//		}
+		if (session.getAttribute("user") == null) {
+			response.setStatus(403);
+			return;
+		}
 
 		String userId = request.getParameter("user_id");
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
+		String term = request.getParameter("term");
 		
 		DBConnection conn = DBConnectionFactory.getDBConnection();
 		
@@ -66,7 +67,7 @@ public class RandomList extends HttpServlet {
 		}
 		
 		if(allCategories.isEmpty()) {
-			allCategories.add("");
+			allCategories.add(term);
 		}
 		
 		//Search recommended restaurant

@@ -7,6 +7,7 @@
 	var user_fullname = '';
 	var lng = -122.08;
 	var lat = 37.38;
+	var term = 'restaurant';
 
 	/**
 	 * Initialize
@@ -17,6 +18,7 @@
 		$('nearby-btn').addEventListener('click', loadNearbyItems);
 		$('fav-btn').addEventListener('click', loadFavoriteItems);
 		$('recommend-btn').addEventListener('click', loadRecommendedItems);
+		$('eat-btn').addEventListener('click', loadRandom);
 
 		validateSession();
 
@@ -299,7 +301,7 @@
 
 		// The request parameters
 		var url = './search';
-		var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng + '&term=restaurant';
+		var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng + '&term=' + term;
 		var req = JSON.stringify({});
 
 		// display loading message
@@ -359,7 +361,7 @@
 
 		// The request parameters
 		var url = './recommendation';
-		var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng;
+		var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng + '&term=' + term;
 
 		var req = JSON.stringify({});
 
@@ -419,7 +421,82 @@
 			}
 		});
 	}
+	
+	/**
+	 * API #5 Random show the place to eat
+	 * API end point: [GET] /Dashi/randomList?user_id=1111
+	 */
+	function loadRandom() {
+		activeBtn('eat-btn');
 
+		// The request parameters
+		var url = './randomList';
+		var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng + '&term=' + term;
+		var req = JSON.stringify({});
+
+		// display loading message
+		showLoadingMessage('Loading restaurants...');
+
+		// make AJAX call
+		ajax('GET', url + '?' + params, req, function(res) {
+			var items = JSON.parse(res);
+			if (!items || items.length === 0) {
+				showWarningMessage('No place to eat.');
+			} else {
+				randomShow(items);
+			}
+		}, function() {
+			showErrorMessage('Cannot load restaurant.');
+		});
+	}	
+
+	// -------------------------------------
+	// Random show recommendations
+	// -------------------------------------
+	var mytime=null;
+	var namelist = [];
+	
+	function randomShow(items){
+		namelist = [];
+		for (var i = 0; i < items.length; i++) {
+			namelist.push(items[i].name);
+		}
+		var itemList = $('item-list');
+		itemList.innerHTML = '';
+        var div = $('div', {
+			id : 'box'
+		});
+        div.innerHTML = "What to eat now?";
+        var btn = $('button', {
+        		id : 'bt'
+        })
+        btn.innerHTML = 'Start';
+        itemList.appendChild(div);
+        itemList.appendChild(btn);
+        btn.addEventListener('click', doit);
+        
+	}
+	
+	function doit(){
+		var bt=$('bt');
+		if(mytime==null){
+			bt.innerHTML="Start";
+			show();                    
+		}else{
+			bt.innerHTML="Stop";
+			clearTimeout(mytime);
+			mytime=null;                    
+		}
+	}
+
+	function show(){
+		var box=$('box');
+		var num=Math.floor((Math.random()*100000))%namelist.length;
+		box.innerHTML=namelist[num];
+		mytime=setTimeout(show,1);
+	}
+	
+	
 	// -------------------------------------
 	// Create item list
 	// -------------------------------------

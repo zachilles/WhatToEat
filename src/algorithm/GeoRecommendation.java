@@ -12,7 +12,7 @@ import db.DBConnectionFactory;
 import entity.Item;
 
 public class GeoRecommendation {
-	public List<Item> recommendItems(String userId, double lat, double lon){
+	public List<Item> recommendItems(String userId, double lat, double lon, String term){
 		DBConnection conn = DBConnectionFactory.getDBConnection();
 		
 		// Get all favorite restaurants
@@ -29,7 +29,7 @@ public class GeoRecommendation {
 		}
 		
 		if(allCategories.isEmpty()) {
-			allCategories.add("");
+			allCategories.add(term);
 		}
 		
 		//Search recommended restaurant
