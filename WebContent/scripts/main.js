@@ -467,7 +467,7 @@
 			id : 'box'
 		});
         div.innerHTML = "What to eat now?";
-        var btn = $('button', {
+        var btn = $('div', {
         		id : 'bt'
         })
         btn.innerHTML = 'Start';
@@ -480,10 +480,10 @@
 	function doit(){
 		var bt=$('bt');
 		if(mytime==null){
-			bt.innerHTML="Start";
+			bt.innerHTML="Stop";
 			show();                    
 		}else{
-			bt.innerHTML="Stop";
+			bt.innerHTML="Start";
 			clearTimeout(mytime);
 			mytime=null;                    
 		}
@@ -492,7 +492,7 @@
 	function show(){
 		var box=$('box');
 		var num=Math.floor((Math.random()*100000))%namelist.length;
-		box.innerHTML=namelist[num];
+		box.innerHTML="Let's go to " + namelist[num] + "!";
 		mytime=setTimeout(show,1);
 	}
 	

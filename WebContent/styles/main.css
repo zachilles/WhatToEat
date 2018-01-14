@@ -16,6 +16,11 @@ ul {
   list-style: none;
 }
 
+img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 20%;
+}
 /**
  * top header
  */
@@ -210,6 +215,45 @@ ul {
 
 .fav-link:hover {
   color: #F13F3F;
+}
+
+/**
+ * random display
+ */
+#box{
+  margin:auto;
+  font-size:2em;
+  height:70px;
+  line-height:95px;
+  overflow:hidden;
+  text-align:center;
+  padding:0 30px;
+  margin-top:50px;
+}
+
+#box>.selectedRestaurant{
+  color: brown;
+}
+
+#bt{
+  margin:auto;
+  width:130px;
+  height:40px;
+  color:white;
+  text-align:center;
+  margin-top:45px;
+  font-size:1.8em;
+  line-height:40px;
+  cursor:pointer;
+  background-image: url('button.png');
+  background-size: 100% 100%;
+  
+}
+
+#bt:hover{
+  font-size:2em;
+  background-image: url('button.png');
+  color:brown;
 }
 
 /**
